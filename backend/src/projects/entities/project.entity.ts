@@ -1,5 +1,5 @@
 import { Todo } from 'src/todos/entities/todo.entity';
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
 
 @Entity()
 export class Project {
@@ -13,6 +13,7 @@ export class Project {
     @Column({ nullable: true })
     description?: string;
 
-    @Column()
+    // OneToMany erstellt keine spalte in der DB, sonder schaut nur welche Zeilen zu dieser projectId gehören. Todo Entitiy todo.project hält die zugehörige projektId.
+    @OneToMany(() => Todo, todo => todo.project)
     todos: Array<Todo>;
 }
