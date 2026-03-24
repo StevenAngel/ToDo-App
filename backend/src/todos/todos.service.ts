@@ -12,24 +12,34 @@ export class TodosService {
     private todoRepository: Repository<Todo>
   ) { }
 
-  async create(createTodoDto: CreateTodoDto) {
-    const todo = this.todoRepository.create(createTodoDto);
+  async create(createTodoDto: CreateTodoDto, projectId: number) {
+    const todo = this.todoRepository.create({
+      ...createTodoDto,
+      // { id: projectId } verknüpft zur project entity, da im entity project als Project entity angegeben ist.
+      project: { id: projectId }
+    });
     return await this.todoRepository.save(todo);
   }
 
   async findAll() {
-    return await this.todoRepository.find();
+    return await this.todoRepository.find({
+      // relations 'project', damit die ManyToOne entry angezeigt wird und das Project Object mitgesendet wird.
+      // Ein anderer weg project immer anzuzeigen wäre im MnayToOne { eager: true }
+      relations: [
+        'project'
+      ]
+    });
   }
 
   async findOne(id: number) {
-    return await this.todoRepository.findOneBy({id: id});
+    return await this.todoRepository.findOneBy({ id: id});
   }
 
   async update(id: number, updateTodoDto: UpdateTodoDto) {
-    return await this.todoRepository.update({id: id}, updateTodoDto);
+    return await this.todoRepository.update({ id: id }, updateTodoDto);
   }
 
   async remove(id: number) {
-    return await this.todoRepository.delete({id: id});
+    return await this.todoRepository.delete({ id: id });
   }
 }

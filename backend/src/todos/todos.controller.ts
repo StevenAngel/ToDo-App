@@ -8,8 +8,11 @@ export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
   @Post()
-  create(@Body() createTodoDto: CreateTodoDto) {
-    return this.todosService.create(createTodoDto);
+  create(
+    @Param('projectId') projectId: string,
+    @Body() createTodoDto: CreateTodoDto
+  ) {
+    return this.todosService.create(createTodoDto, Number(projectId));
   }
 
   @Get()
