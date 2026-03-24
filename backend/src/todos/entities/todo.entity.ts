@@ -19,6 +19,7 @@ export class Todo {
     @Column({ nullable: true })
     deadline: Date;
 
+    // ManyToOne erstellt ein Feld in der DB. Außerdem wird eine verbindung erstellt zu project.todos, dem OneToMany feld, welchem die daten geliefert werden für schnellere abfragen.
     @ManyToOne(() => Project, project => project.todos)
     project: Project;
 }

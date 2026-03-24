@@ -20,8 +20,8 @@ export class CreateTodoDto {
     deadline: Date;
 
     // IsInt für ganze zahlen, IsNumber für komma zahlen
-    @IsInt()
-    @IsPositive()
-    @IsNotEmpty()
-    projectId: number;
+    // @IsInt()
+    // @IsPositive()
+    // @IsNotEmpty()
+    // projectId: number;
 }
