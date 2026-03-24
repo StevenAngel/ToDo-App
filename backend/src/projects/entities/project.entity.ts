@@ -1,3 +1,4 @@
+import { Todo } from 'src/todos/entities/todo.entity';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 
 @Entity()
@@ -11,4 +12,7 @@ export class Project {
     // nullable: true für ein optionales feld
     @Column({ nullable: true })
     description?: string;
+
+    @Column({default: []})
+    todos: Array<Todo>
 }
