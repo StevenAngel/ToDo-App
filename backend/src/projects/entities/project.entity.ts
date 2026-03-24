@@ -13,6 +13,6 @@ export class Project {
     @Column({ nullable: true })
     description?: string;
 
-    @Column({default: []})
-    todos: Array<Todo>
+    @Column()
+    todos: Array<Todo>;
 }

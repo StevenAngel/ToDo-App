@@ -17,24 +17,24 @@ export class ProjectsService {
 
   async create(createProjectDto: CreateProjectDto) {
     // Create project, dann save in Datenbank
-    const project = this.projectRepository.create(createProjectDto)
-    return await this.projectRepository.save(project)
+    const project = this.projectRepository.create(createProjectDto);
+    return await this.projectRepository.save(project);
   }
 
   async findAll() {
-    return await this.projectRepository.find()
+    return await this.projectRepository.find();
   }
 
   async findOne(id: number) {
-    return await this.projectRepository.findOneBy({id: id})
+    return await this.projectRepository.findOneBy({ id: id });
   }
 
   async update(id: number, updateProjectDto: UpdateProjectDto) {
-    return await this.projectRepository.update({id: id}, updateProjectDto)
+    return await this.projectRepository.update({ id: id }, updateProjectDto);
   }
 
   async remove(id: number) {
     // Delete == delete by xyz. Remove kann ein object removen, dass geladen wurde (z.b. mit findOne)
-    return await this.projectRepository.delete({id: id})
+    return await this.projectRepository.delete({ id: id });
   }
 }

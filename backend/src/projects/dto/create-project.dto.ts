@@ -14,5 +14,5 @@ export class CreateProjectDto {
     // IsOptional, weil IsNotEmpty err 400 werfen würde, wenn noch keine todos im project (leeres array) 
     @IsArray()
     @IsOptional()
-    todos: Array<CreateTodoDto>
+    todos: Array<CreateTodoDto> = [];
 }
