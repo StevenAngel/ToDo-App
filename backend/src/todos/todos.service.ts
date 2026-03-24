@@ -21,18 +21,19 @@ export class TodosService {
     return await this.todoRepository.save(todo);
   }
 
-  async findAll() {
+  async findAll(projectId: number) {
     return await this.todoRepository.find({
+      where: { project: { id: projectId } },
       // relations 'project', damit die ManyToOne entry angezeigt wird und das Project Object mitgesendet wird.
       // Ein anderer weg project immer anzuzeigen wäre im MnayToOne { eager: true }
-      relations: [
-        'project'
-      ]
+      // relations: [
+      //   'project'
+      // ]
     });
   }
 
   async findOne(id: number) {
-    return await this.todoRepository.findOneBy({ id: id});
+    return await this.todoRepository.findOneBy({ id: id });
   }
 
   async update(id: number, updateTodoDto: UpdateTodoDto) {
