@@ -27,14 +27,31 @@
                         <v-spacer></v-spacer>
                         <v-dialog>
                             <!-- v-slot (#activator) ist das Element, dass den Dialog öffnen soll. Es legt für den v-dialog ein object props an. Es ist ein eventListener wie onClick.  -->
-                            <template #activator="{props}">
+                            <template #activator="{ props }">
                                 <!-- mit v-bind binde ich das object an den button, damit vuetify weiß, es muss den dialog onclick öffnen  -->
                                 <v-btn variant="tonal" color="red" v-bind="props">
                                     Delete
                                 </v-btn>
                             </template>
+                            <!-- isActive ist ebenfalls eine intern für den dialog angelegte Ref von vuetify, die den wert enthält, ob der dialog offen (true) oder geschlossen (false) ist -->
                             <template #default="{ isActive }">
-                                <p>test</p>
+                                <v-row justify="center">
+                                    <v-col cols="12" sm="8" md="6" lg="4">
+                                        <v-card>
+                                            <v-card-title class="text-wrap">
+                                                Do you really want to delete this project?
+                                            </v-card-title>
+                                            <v-card-text>
+                                                Deleting this project will automatically delete all todos irreversible.
+                                            </v-card-text>
+                                            <v-card-actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn @click="isActive.value = false" color="red">Delete</v-btn>
+                                                <v-btn @click="isActive.value = false">Abort</v-btn>
+                                            </v-card-actions>
+                                        </v-card>
+                                    </v-col>
+                                </v-row>
                             </template>
                         </v-dialog>
                     </v-card-actions>
@@ -47,6 +64,5 @@
 import { ref, type Ref } from 'vue';
 
 const showProject: Ref<boolean> = ref(false)
-const isActive: Ref<boolean> = ref(false)
 const load: Ref<boolean> = ref(false) // Placeholder to load project site later
 </script>
