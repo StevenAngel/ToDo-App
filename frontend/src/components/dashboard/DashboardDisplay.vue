@@ -1,5 +1,6 @@
 <template>
     <v-container>
+        <!-- PROJECT ITEM -->
         <v-card hover @click="load = !load">
             <v-card-item>
                 <!-- vuetify hat in manchen elementen "slots" die man füllen kann, dies macht man hauptsächlich mit <template>. v-slot:prepend oder kurz (#prepend) sagt vuetify, dass dieses element vorne angehängt werden soll.   -->
@@ -21,27 +22,7 @@
                     <v-divider></v-divider>
                     <v-list>
                         <!-- TODO ITEM -->
-                        <v-list-item class="priority-low rounded-lg" @click="mockTodo.isFinished = !mockTodo.isFinished">
-                            <template #prepend>
-                                <!-- click.stop stoppt den click, da wir schon auf dem list item den click handlen -->
-                                <v-checkbox-btn :model-value="mockTodo.isFinished" @click.stop></v-checkbox-btn>
-                            </template>
-                            <v-list-item-title :class="{ 'text-decoration-line-through': mockTodo.isFinished }">{{ mockTodo.title }}</v-list-item-title>
-                            <v-list-item-subtitle>{{ mockTodo.description }}</v-list-item-subtitle>
-
-                            <template #append>
-                                <!-- div statt v-chip-group, da v-chip-group farbe aller child überschreibt. -->
-                                <!-- class display-flex und gap-2 (8px) -->
-                                <div class="d-flex ga-2">
-                                    <v-chip color="green">
-                                        {{ mockTodo.priority }}
-                                    </v-chip>
-                                    <v-chip :color="mockTodo.deadline && mockTodo.deadline <= new Date() ? 'red' : ''">
-                                        {{ mockTodo.deadline?.toLocaleDateString() }}
-                                    </v-chip>
-                                </div>
-                            </template>
-                        </v-list-item>
+                        <ProjectTodoItem v-model="mockTodo"/>
                     </v-list>
                     <v-card-actions>
                         <v-spacer></v-spacer>
@@ -83,10 +64,11 @@
 
 <script lang="ts" setup>
 import type { Todo } from '@/types/todo';
-import { ref, type Ref } from 'vue';
+import { ref } from 'vue';
+import ProjectTodoItem from './ProjectTodoItem.vue';
 
-const showProject: Ref<boolean> = ref(false);
-const mockTodo: Ref<Todo> = ref({
+const showProject = ref<boolean>(false);
+const mockTodo = ref<Todo>({
     id: 1,
     title: "Todo Mock Title",
     description: "Todo Mock Description",
@@ -94,7 +76,12 @@ const mockTodo: Ref<Todo> = ref({
     deadline: new Date("2026-01-01"),
     isFinished: false
 })
-const load: Ref<boolean> = ref(false); // Placeholder to load project site later
+/**
+ * TODO:
+ * LOAD PROJECTS & TODOS FROM DB
+ * WATCH isFinished -> write DB
+ */
+const load = ref<boolean>(false); // Placeholder to load project site later
 </script>
 
 <style scoped>

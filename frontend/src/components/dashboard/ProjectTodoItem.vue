@@ -1,0 +1,31 @@
+<template>
+    <v-list-item class="priority-low rounded-lg" @click="todo.isFinished = !todo.isFinished">
+        <template #prepend>
+            <!-- click.stop stoppt den click, da wir schon auf dem list item den click handlen -->
+            <v-checkbox-btn :model-value="todo.isFinished" @click.stop></v-checkbox-btn>
+        </template>
+        <v-list-item-title :class="{ 'text-decoration-line-through': todo.isFinished }">{{ todo.title
+            }}</v-list-item-title>
+        <v-list-item-subtitle v-if="todo.description">{{ todo.description }}</v-list-item-subtitle>
+
+        <template #append>
+            <!-- div statt v-chip-group, da v-chip-group farbe aller child überschreibt. -->
+            <!-- class display-flex und gap-2 (8px) -->
+            <div class="d-flex ga-2">
+                <v-chip color="green">
+                    {{ todo.priority }}
+                </v-chip>
+                <v-chip v-if="todo.deadline" :color="todo.deadline && todo.deadline <= new Date() ? 'red' : ''">
+                    {{ todo.deadline?.toLocaleDateString() }}
+                </v-chip>
+            </div>
+        </template>
+    </v-list-item>
+</template>
+<script lang="ts" setup>
+import type { Todo } from '@/types/todo';
+import type { Ref } from 'vue';
+
+// required: true, damit error geworfen wird, wenn kein v-model im parent angegeben
+const todo: Ref<Todo> = defineModel<Todo>({required: true});
+</script>
