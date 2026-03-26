@@ -18,10 +18,11 @@
         <v-expand-transition>
             <v-container v-show="showProject">
                 <v-divider></v-divider>
-                <v-list>
+                <v-list class="d-flex flex-column ga-2">
                     <!-- TODO ITEM -->
-                     <!-- v-for="mockTodo in mockTodos" geht nicht, da mockTodo eine lokale variable ist, die nicht geschrieben werden kann. Man muss den index nutzen  -->
-                    <ProjectTodoItem v-for="(mockTodo, index) in mockTodos" :key="mockTodo.id" v-model="mockTodos[index]" />
+                    <!-- v-for="mockTodo in mockTodos" geht nicht, da mockTodo eine lokale variable ist, die nicht geschrieben werden kann. Man muss den index nutzen  -->
+                    <ProjectTodoItem v-for="(mockTodo, index) in mockTodos" :key="mockTodo.id"
+                        v-model="mockTodos[index]" />
                 </v-list>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -67,10 +68,17 @@ import type { Project } from '@/types/project';
 
 // TypeScript props weg. ['title', 'description'] == JS
 // Zugreifen geht mit project.title oder props.project.titel, da <template> props automatisch auflöst
-const props = defineProps<{project: Project}>()
+const props = defineProps<{ project: Project }>()
 const showProject = ref<boolean>(false);
 const mockTodos = ref<Array<Todo>>([{
     id: 1,
+    title: "Todo Mock Title",
+    description: "Todo Mock Description",
+    priority: "low",
+    deadline: new Date("2026-03-27"),
+    isFinished: false
+},{
+    id: 2,
     title: "Todo Mock Title",
     description: "Todo Mock Description",
     priority: "low",

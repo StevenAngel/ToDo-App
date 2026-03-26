@@ -1,7 +1,7 @@
 <template>
-    <v-container>
+    <v-container class="d-flex flex-column ga-2">
         <!-- PROJECT ITEM -->
-        <ProjectItem :project="mockProject" />
+        <ProjectItem v-for="mockProject in mockProjects" :project="mockProject" />
     </v-container>
 </template>
 
@@ -10,9 +10,13 @@ import { ref } from 'vue';
 import type { Project } from '@/types/project';
 import ProjectItem from './ProjectItem.vue';
 
-const mockProject = ref<Project>({
+const mockProjects = ref<Array<Project>>([{
     id: 1,
     title: "Todo Mock Title",
     description: "Todo Mock Description"
-})
+}, {
+    id: 1,
+    title: "Todo Mock Title",
+    description: "Todo Mock Description"
+}])
 </script>
