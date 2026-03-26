@@ -17,10 +17,30 @@
                 </template>
             </v-card-item>
             <v-expand-transition>
-                <div v-show="showProject">
+                <v-container v-show="showProject">
                     <v-divider></v-divider>
                     <v-list>
-                        <v-list-item title="Todo 1">
+                        <!-- TODO ITEM -->
+                        <v-list-item class="priority-low rounded-lg" @click="mockTodo.isFinished = !mockTodo.isFinished">
+                            <template #prepend>
+                                <!-- click.stop stoppt den click, da wir schon auf dem list item den click handlen -->
+                                <v-checkbox-btn :model-value="mockTodo.isFinished" @click.stop></v-checkbox-btn>
+                            </template>
+                            <v-list-item-title :class="{ 'text-decoration-line-through': mockTodo.isFinished }">{{ mockTodo.title }}</v-list-item-title>
+                            <v-list-item-subtitle>{{ mockTodo.description }}</v-list-item-subtitle>
+
+                            <template #append>
+                                <!-- div statt v-chip-group, da v-chip-group farbe aller child überschreibt. -->
+                                <!-- class display-flex und gap-2 (8px) -->
+                                <div class="d-flex ga-2">
+                                    <v-chip color="green">
+                                        {{ mockTodo.priority }}
+                                    </v-chip>
+                                    <v-chip :color="mockTodo.deadline && mockTodo.deadline <= new Date() ? 'red' : ''">
+                                        {{ mockTodo.deadline?.toLocaleDateString() }}
+                                    </v-chip>
+                                </div>
+                            </template>
                         </v-list-item>
                     </v-list>
                     <v-card-actions>
@@ -55,14 +75,30 @@
                             </template>
                         </v-dialog>
                     </v-card-actions>
-                </div>
+                </v-container>
             </v-expand-transition>
         </v-card>
     </v-container>
 </template>
+
 <script lang="ts" setup>
+import type { Todo } from '@/types/todo';
 import { ref, type Ref } from 'vue';
 
-const showProject: Ref<boolean> = ref(false)
-const load: Ref<boolean> = ref(false) // Placeholder to load project site later
+const showProject: Ref<boolean> = ref(false);
+const mockTodo: Ref<Todo> = ref({
+    id: 1,
+    title: "Todo Mock Title",
+    description: "Todo Mock Description",
+    priority: "low",
+    deadline: new Date("2026-01-01"),
+    isFinished: false
+})
+const load: Ref<boolean> = ref(false); // Placeholder to load project site later
 </script>
+
+<style scoped>
+.priority-low {
+    border: 4px solid rgb(var(--v-theme-success))
+}
+</style>
