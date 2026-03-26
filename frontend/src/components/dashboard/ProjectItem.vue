@@ -81,7 +81,7 @@ const mockTodos = ref<Array<Todo>>([{
     id: 2,
     title: "Todo Mock Title",
     description: "Todo Mock Description",
-    priority: "low",
+    priority: "medium",
     deadline: new Date("2026-03-27"),
     isFinished: false
 }])
