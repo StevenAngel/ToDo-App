@@ -29,3 +29,9 @@ import type { Ref } from 'vue';
 // required: true, damit error geworfen wird, wenn kein v-model im parent angegeben
 const todo: Ref<Todo> = defineModel<Todo>({required: true});
 </script>
+
+<style scoped>
+.priority-low {
+    border: 4px solid rgb(var(--v-theme-success))
+}
+</style>
