@@ -20,7 +20,8 @@
                 <v-divider></v-divider>
                 <v-list>
                     <!-- TODO ITEM -->
-                    <ProjectTodoItem v-model="mockTodo" />
+                     <!-- v-for="mockTodo in mockTodos" geht nicht, da mockTodo eine lokale variable ist, die nicht geschrieben werden kann. Man muss den index nutzen  -->
+                    <ProjectTodoItem v-for="(mockTodo, index) in mockTodos" :key="mockTodo.id" v-model="mockTodos[index]" />
                 </v-list>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -68,14 +69,14 @@ import type { Project } from '@/types/project';
 // Zugreifen geht mit project.title oder props.project.titel, da <template> props automatisch auflöst
 const props = defineProps<{project: Project}>()
 const showProject = ref<boolean>(false);
-const mockTodo = ref<Todo>({
+const mockTodos = ref<Array<Todo>>([{
     id: 1,
     title: "Todo Mock Title",
     description: "Todo Mock Description",
     priority: "low",
     deadline: new Date("2026-03-27"),
     isFinished: false
-})
+}])
 /**
  * TODO:
  * LOAD PROJECTS & TODOS FROM DB
