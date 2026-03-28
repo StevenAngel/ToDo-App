@@ -2,7 +2,7 @@
     <v-list-item :class="[priorityClass, 'rounded-lg']" @click="todo.isFinished = !todo.isFinished">
         <template #prepend>
             <!-- click.stop stoppt den click, da wir schon auf dem list item den click handlen -->
-            <v-checkbox-btn :model-value="todo.isFinished" @click.stop></v-checkbox-btn>
+            <v-checkbox-btn :model-value="todo.isFinished" readonly></v-checkbox-btn>
         </template>
         <v-list-item-title :class="{ 'text-decoration-line-through': todo.isFinished }">{{ todo.title
             }}</v-list-item-title>
