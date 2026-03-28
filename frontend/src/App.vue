@@ -1,13 +1,9 @@
 <template>
   <v-app>
-    <DashboardNav />
-    <v-main>
-      <DashboardDisplay />
-    </v-main>
+    <router-view></router-view>
   </v-app>
 </template>
 
 <script lang="ts" setup>
-import DashboardNav from '@/components/dashboard/DashboardNavigation.vue'
-import DashboardDisplay from './components/dashboard/DashboardDisplay.vue';
+
 </script>
