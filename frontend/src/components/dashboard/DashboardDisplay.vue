@@ -9,21 +9,21 @@
             <v-col cols="12" lg="10" md="8">
                 <!-- div statt v-container damit kein extra padding / margin angewandt wird -->
                 <!-- DASHBOARD WRAPPER -->
-                <div v-show="view == 'dashboard'" class="d-flex flex-column ga-2">
+                <div v-show="view == 'dashboard'" class="d-flex flex-column ga-4">
                     <!-- SORT TODOS -->
                     <v-select label="Sort" v-model="sortBy" :items="['Priority', 'Deadline', 'Category', 'Project']"
                         class="ml-auto" width="150" hide-details>
                     </v-select>
                     <!-- SORT CONTAINER -->
-                    <OutlinedContainer label="High">
+                    <OutlinedContainer v-for="value in sortedContainers" :label="value">
                         <!-- DASHBOARD ITEM -->
-                        <DashboardTodoItem />
+                        <TodoItem v-for="item in filterItems(value)" v-model="mockTodos[mockTodos.indexOf(item)]" />
                     </OutlinedContainer>
                 </div>
                 <!-- PROJECTS WRAPPER -->
                 <div v-show="view == 'projects'" class="d-flex flex-column ga-2">
                     <!-- ADD PROJECT BUTTON -->
-                    <v-btn class="mr-auto" @click="console.log('placeholder')">NEW PROJECT</v-btn>
+                    <v-btn class="ml-auto" @click="console.log('placeholder')">NEW PROJECT</v-btn>
                     <!-- PROJECT ITEM -->
                     <ProjectItem v-for="mockProject in mockProjects" :project="mockProject" />
                 </div>
@@ -33,12 +33,61 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import type { Project } from '@/types/project';
 import ProjectItem from './ProjectItem.vue';
 import SideNavigation from './SideNavigation.vue';
-import DashboardTodoItem from './DashboardTodoItem.vue';
 import OutlinedContainer from '../ui/OutlinedContainer.vue';
+import TodoItem from './TodoItem.vue';
+import type { Todo } from '@/types/todo';
+import { nullifyTransforms } from 'vuetify/lib/util/animation.mjs';
+
+const mockTodos = ref<Array<Todo>>([{
+    id: 4,
+    title: "Todo Mock Title",
+    description: "Todo Mock Description",
+    priority: "medium",
+    deadline: "2027-03-28",
+    categories: [],
+    isDone: false,
+    project: "Mock Project2"
+}, {
+    id: 1,
+    title: "Todo Mock Title",
+    description: "Todo Mock Description",
+    priority: "low",
+    deadline: "2026-03-28",
+    categories: [],
+    isDone: false,
+    project: "Mock Project2"
+
+}, {
+    id: 2,
+    title: "Todo Mock Title",
+    description: "Todo Mock Description",
+    priority: "medium",
+    deadline: "2026-03-27",
+    categories: [],
+    isDone: false,
+    project: "Mock Project2"
+}, {
+    id: 5,
+    title: "Todo Mock Title",
+    description: "Todo Mock Description",
+    priority: "low",
+    deadline: "2026-03-27",
+    categories: [],
+    isDone: false,
+    project: "Mock Project"
+}, {
+    id: 3,
+    title: "Todo Mock Title",
+    description: "Todo Mock Description",
+    priority: "high",
+    categories: ['Mock Category', 'Category 2'],
+    isDone: false,
+    project: "Mock Project"
+}]);
 
 const mockProjects = ref<Array<Project>>([{
     id: 1,
@@ -48,8 +97,70 @@ const mockProjects = ref<Array<Project>>([{
     id: 1,
     title: "Todo Mock Title",
     description: "Todo Mock Description"
-}])
+}]);
 
 const sortBy = ref<string>('Priority')
 const view = ref<string>('dashboard')
+
+const sortedContainers = computed<Array<string>>(() => {
+    switch (sortBy.value) {
+        case 'Priority':
+            return ['high', 'medium', 'low'];
+        case 'Deadline':
+            const deadlines: Array<string> = [];
+            mockTodos.value.forEach((element: Todo) => {
+                if (element.deadline) {
+                    if (!deadlines.includes(element.deadline)) deadlines.push(element.deadline);
+                }
+            });
+
+            deadlines.sort((a: string, b: string) => new Date(a).getTime() - new Date(b).getTime());
+            deadlines.push('No Deadline');
+            return deadlines;
+        case 'Category':
+            const categories: Array<string> = [];
+            mockTodos.value.forEach((element: Todo) => {
+                element.categories.forEach((category: string) => {
+                    if (!categories.includes(category)) categories.push(category);
+                });
+            });
+
+            categories.push("No Category");
+            return categories;
+        case 'Project':
+            const projects: Array<string> = [];
+            mockTodos.value.forEach((element: Todo) => {
+                if (element.project) {
+                    if (!projects.includes(element.project)) projects.push(element.project);
+                }
+            });
+
+            return projects;
+        default:
+            return [];
+    }
+})
+
+const filterItems = (containerValue: string): Array<Todo> => {
+    switch (sortBy.value) {
+        case 'Priority':
+            return mockTodos.value.filter((item: Todo) => item.priority == containerValue);
+        case 'Deadline':
+            if (containerValue == "No Deadline") {
+                return mockTodos.value.filter((item: Todo) => item.deadline == undefined);
+            } else {
+                return mockTodos.value.filter((item: Todo) => item.deadline == containerValue);
+            }
+        case 'Category':
+            if (containerValue == "No Category") {
+                return mockTodos.value.filter((item: Todo) => item.categories.length == 0);
+            } else {
+                return mockTodos.value.filter((item: Todo) => item.categories.some(category => containerValue.includes(category)));
+            }
+        case 'Project':
+            return mockTodos.value.filter((item: Todo) => item.project == containerValue);
+        default:
+            return mockTodos.value;
+    }
+}
 </script>

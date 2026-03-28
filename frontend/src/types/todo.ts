@@ -3,7 +3,8 @@ export interface Todo {
     title: string
     description?: string
     priority: 'low' | 'medium' | 'high'
-    deadline?: Date
+    deadline?: string
     categories: Array<string>
     isDone: boolean
+    project?: string
 }

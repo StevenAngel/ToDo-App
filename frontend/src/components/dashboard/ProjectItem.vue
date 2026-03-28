@@ -21,7 +21,7 @@
                 <v-list class="d-flex flex-column ga-2">
                     <!-- TODO ITEM -->
                     <!-- v-for="mockTodo in mockTodos" geht nicht, da mockTodo eine lokale variable ist, die nicht geschrieben werden kann. Man muss den index nutzen  -->
-                    <ProjectTodoItem v-for="(mockTodo, index) in mockTodos" :key="mockTodo.id"
+                    <TodoItem v-for="(mockTodo, index) in mockTodos" :key="mockTodo.id"
                         v-model="mockTodos[index]" />
                 </v-list>
                 <v-card-actions>
@@ -63,8 +63,8 @@
 <script lang="ts" setup>
 import type { Todo } from '@/types/todo';
 import { ref } from 'vue';
-import ProjectTodoItem from './ProjectTodoItem.vue';
 import type { Project } from '@/types/project';
+import TodoItem from './TodoItem.vue';
 
 // TypeScript props weg. ['title', 'description'] == JS
 // Zugreifen geht mit project.title oder props.project.titel, da <template> props automatisch auflöst
@@ -75,7 +75,7 @@ const mockTodos = ref<Array<Todo>>([{
     title: "Todo Mock Title",
     description: "Todo Mock Description",
     priority: "low",
-    deadline: new Date("2026-03-27"),
+    deadline: "2026-03-27",
     categories: [],
     isDone: false
 }, {
@@ -83,7 +83,7 @@ const mockTodos = ref<Array<Todo>>([{
     title: "Todo Mock Title",
     description: "Todo Mock Description",
     priority: "medium",
-    deadline: new Date("2026-03-27"),
+    deadline: "2026-03-27",
     categories: [],
     isDone: false
 }])

@@ -5,18 +5,21 @@
             <v-checkbox-btn :model-value="todo.isDone" readonly></v-checkbox-btn>
         </template>
         <v-list-item-title :class="{ 'text-decoration-line-through': todo.isDone }">{{ todo.title
-            }}</v-list-item-title>
+        }}</v-list-item-title>
         <v-list-item-subtitle v-if="todo.description">{{ todo.description }}</v-list-item-subtitle>
 
         <template #append>
             <!-- div statt v-chip-group, da v-chip-group farbe aller child überschreibt. -->
             <!-- class display-flex und gap-2 (8px) -->
             <div class="d-flex ga-2">
+                <v-chip v-if="todo.project" prepend-icon="mdi-folder" variant="outlined">
+                    {{ todo.project }}
+                </v-chip>
                 <v-chip :color="priorityColor">
                     {{ todo.priority }}
                 </v-chip>
-                <v-chip v-if="todo.deadline" :color="todo.deadline && todo.deadline <= new Date() ? 'red' : ''">
-                    {{ todo.deadline?.toLocaleDateString() }}
+                <v-chip v-if="todo.deadline" :color="todo.deadline && new Date(todo.deadline) <= new Date() ? 'red' : ''">
+                    {{ todo.deadline }}
                 </v-chip>
             </div>
         </template>
@@ -27,9 +30,9 @@ import type { Todo } from '@/types/todo';
 import { computed, type Ref } from 'vue';
 
 // required: true, damit error geworfen wird, wenn kein v-model im parent angegeben
-const todo: Ref<Todo> = defineModel<Todo>({required: true});
+const todo: Ref<Todo> = defineModel<Todo>({ required: true });
 const priorityColor = todo.value.priority == "low" ? "green" : todo.value.priority == "medium" ? "orange" : "red";
-const priorityClass = computed(() => "priority-"+priorityColor)
+const priorityClass = computed(() => "priority-" + priorityColor)
 </script>
 
 <style scoped>
