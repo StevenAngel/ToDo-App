@@ -40,7 +40,6 @@ import SideNavigation from './SideNavigation.vue';
 import OutlinedContainer from '../ui/OutlinedContainer.vue';
 import TodoItem from './TodoItem.vue';
 import type { Todo } from '@/types/todo';
-import { nullifyTransforms } from 'vuetify/lib/util/animation.mjs';
 
 const mockTodos = ref<Array<Todo>>([{
     id: 4,
