@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Project } from "../../projects/entities/project.entity";
-import { Importance } from "../enums/importance.enum";
+import { Priority } from "../enums/priority.enum";
 
 @Entity()
 export class Todo {
@@ -14,10 +14,16 @@ export class Todo {
     description: string;
 
     @Column()
-    importance: Importance;
+    priority: Priority;
 
     @Column({ nullable: true })
     deadline: Date;
+
+    @Column({ default: [] })
+    categories: Array<string>;
+
+    @Column()
+    isDone: boolean;
 
     // ManyToOne erstellt ein Feld in der DB. Außerdem wird eine verbindung erstellt zu project.todos, dem OneToMany feld, welchem die daten geliefert werden für schnellere abfragen.
     @ManyToOne(() => Project, project => project.todos, {

@@ -1,5 +1,5 @@
-import { IsDateString, IsEnum, IsInt, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
-import { Importance } from "../enums/importance.enum";
+import { IsArray, IsBoolean, IsDateString, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { Priority } from "../enums/priority.enum";
 
 export class CreateTodoDto {
     @IsString()
@@ -10,15 +10,23 @@ export class CreateTodoDto {
     @IsOptional()
     description: string;
 
-    @IsEnum(Importance)
+    @IsEnum(Priority)
     @IsNotEmpty()
-    importance: Importance;
+    priority: Priority;
 
     // IsDateString für JSON Dates, IsDate funktioniert nicht immer mit JSON
     @IsDateString()
     @IsOptional()
     deadline: Date;
 
+    @IsArray()
+    @IsString({ each: true })
+    @IsOptional()
+    categories: Array<string>;
+
+    @IsBoolean()
+    @IsNotEmpty()
+    isDone: boolean;
     // IsInt für ganze zahlen, IsNumber für komma zahlen
     // @IsInt()
     // @IsPositive()
