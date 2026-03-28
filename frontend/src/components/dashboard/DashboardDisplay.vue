@@ -1,16 +1,22 @@
 <template>
-
     <v-container>
         <v-row>
             <!-- weite: 12 cols (100%), ab medium bildschirm width: 2 cols -->
-            <v-col cols="12" md="2">
+            <v-col cols="12" lg="2" md="4">
                 <!-- SIDE NAVIGATION -->
                 <SideNavigation v-model="view"></SideNavigation>
             </v-col>
-            <v-col cols="12" md="10">
+            <v-col cols="12" lg="10" md="8">
                 <!-- div statt v-container damit kein extra padding / margin angewandt wird -->
-                 <!-- PROJECTS WRAPPER -->
+                <!-- DASHBOARD WRAPPER -->
+                <div v-show="view == 'dashboard'" class="d-flex flex-column ga-2">
+                    <!-- DASHBOARD ITEM -->
+                    
+                </div>
+                <!-- PROJECTS WRAPPER -->
                 <div v-show="view == 'projects'" class="d-flex flex-column ga-2">
+                    <!-- ADD PROJECT BUTTON -->
+                     <v-btn class="mr-auto" @click="console.log('placeholder')">NEW PROJECT</v-btn>
                     <!-- PROJECT ITEM -->
                     <ProjectItem v-for="mockProject in mockProjects" :project="mockProject" />
                 </div>
