@@ -1,5 +1,4 @@
 <template>
-  <DashboardNav />
   <v-main>
     <DashboardDisplay />
   </v-main>
