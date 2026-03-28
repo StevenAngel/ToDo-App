@@ -48,7 +48,7 @@
                                         <v-card-actions>
                                             <v-spacer></v-spacer>
                                             <v-btn @click="isActive.value = false" color="red">Delete</v-btn>
-                                            <v-btn @click="isActive.value = false">Abort</v-btn>
+                                            <v-btn @click="isActive.value = false">Cancel</v-btn>
                                         </v-card-actions>
                                     </v-card>
                                 </v-col>
