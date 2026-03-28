@@ -23,7 +23,37 @@
                 <!-- PROJECTS WRAPPER -->
                 <div v-show="view == 'projects'" class="d-flex flex-column ga-2">
                     <!-- ADD PROJECT BUTTON -->
-                    <v-btn class="ml-auto" @click="console.log('placeholder')">NEW PROJECT</v-btn>
+                    <v-dialog>
+                        <!-- v-slot (#activator) ist das Element, dass den Dialog öffnen soll. Es legt für den v-dialog ein object props an. Es ist ein eventListener wie onClick.  -->
+                        <template #activator="{ props }">
+                            <!-- mit v-bind binde ich das object an den button, damit vuetify weiß, es muss den dialog onclick öffnen  -->
+                            <v-btn v-bind="props" class="ml-auto">
+                                NEW PROJECT
+                            </v-btn>
+                        </template>
+                        <!-- isActive ist ebenfalls eine intern für den dialog angelegte Ref von vuetify, die den wert enthält, ob der dialog offen (true) oder geschlossen (false) ist -->
+                        <template #default="{ isActive }">
+                            <v-row justify="center">
+                                <v-col cols="12" sm="8" md="6" lg="4">
+                                    <v-card>
+                                        <v-card-title class="text-wrap">
+                                            CREATE A NEW PROJECT
+                                        </v-card-title>
+                                        <v-divider></v-divider>
+                                        <v-container>
+                                            <v-text-field label="Title*" variant="outlined"></v-text-field>
+                                            <v-text-field label="Description" variant="outlined"></v-text-field>
+                                            <div class="d-flex ga-2">
+                                                <v-spacer></v-spacer>
+                                                <v-btn @click="isActive.value = false" color="green">Create</v-btn>
+                                                <v-btn @click="isActive.value = false">Cancel</v-btn>
+                                            </div>
+                                        </v-container>
+                                    </v-card>
+                                </v-col>
+                            </v-row>
+                        </template>
+                    </v-dialog>
                     <!-- PROJECT ITEM -->
                     <ProjectItem v-for="mockProject in mockProjects" :project="mockProject" />
                 </div>
