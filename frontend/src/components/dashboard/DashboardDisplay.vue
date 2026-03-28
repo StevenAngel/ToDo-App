@@ -14,9 +14,11 @@
                     <v-select label="Sort" v-model="sortBy" :items="['Priority', 'Deadline', 'Category', 'Project']"
                         class="ml-auto" width="150" hide-details>
                     </v-select>
-                    <OutlinedContainer label="test"><p>test</p></OutlinedContainer>
-                    <!-- DASHBOARD ITEM -->
-                    <DashboardTodoItem />
+                    <!-- SORT CONTAINER -->
+                    <OutlinedContainer label="High">
+                        <!-- DASHBOARD ITEM -->
+                        <DashboardTodoItem />
+                    </OutlinedContainer>
                 </div>
                 <!-- PROJECTS WRAPPER -->
                 <div v-show="view == 'projects'" class="d-flex flex-column ga-2">

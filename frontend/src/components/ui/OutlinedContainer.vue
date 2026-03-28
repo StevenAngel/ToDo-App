@@ -1,13 +1,13 @@
 <template>
     <div class="outlinedContainer rounded">
         <span class="label">{{ props.label }}</span>
-        <div class="pa-2">
+        <v-list class="pa-4 d-flex flex-column ga-2" bg-color="transparent">
             <slot />
-        </div>
+        </v-list>
     </div>
 </template>
 <script lang="ts" setup>
-const props = defineProps<{label: string }>()
+const props = defineProps<{ label: string }>()
 </script>
 <style scoped>
 .outlinedContainer {
@@ -20,6 +20,7 @@ const props = defineProps<{label: string }>()
     top: -16px;
     left: 16px;
     padding: 4px;
+    z-index: 99;
     background: rgb(var(--v-theme-background));
 }
 </style>
