@@ -45,8 +45,8 @@
                                             <v-text-field label="Description" variant="outlined"></v-text-field>
                                             <div class="d-flex ga-2">
                                                 <v-spacer></v-spacer>
-                                                <v-btn @click="isActive.value = false" color="green">Create</v-btn>
-                                                <v-btn @click="isActive.value = false">Cancel</v-btn>
+                                                <v-btn @click="isActive.value = false" variant="tonal" color="green">Create</v-btn>
+                                                <v-btn @click="isActive.value = false" variant="tonal">Cancel</v-btn>
                                             </div>
                                         </v-container>
                                     </v-card>
