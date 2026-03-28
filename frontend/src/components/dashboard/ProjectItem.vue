@@ -87,6 +87,7 @@ const mockTodos = ref<Array<Todo>>([{
 }])
 /**
  * TODO:
+ * Create views
  * LOAD PROJECTS & TODOS FROM DB
  * WATCH isFinished -> write DB
  */
