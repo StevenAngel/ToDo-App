@@ -10,13 +10,18 @@
                 <!-- div statt v-container damit kein extra padding / margin angewandt wird -->
                 <!-- DASHBOARD WRAPPER -->
                 <div v-show="view == 'dashboard'" class="d-flex flex-column ga-2">
+                    <!-- SORT TODOS -->
+                    <v-select label="Sort" v-model="sortBy" :items="['Priority', 'Deadline', 'Category', 'Project']"
+                        class="ml-auto" width="150" hide-details>
+                    </v-select>
+                    <OutlinedContainer label="test"><p>test</p></OutlinedContainer>
                     <!-- DASHBOARD ITEM -->
-                    
+                    <DashboardTodoItem />
                 </div>
                 <!-- PROJECTS WRAPPER -->
                 <div v-show="view == 'projects'" class="d-flex flex-column ga-2">
                     <!-- ADD PROJECT BUTTON -->
-                     <v-btn class="mr-auto" @click="console.log('placeholder')">NEW PROJECT</v-btn>
+                    <v-btn class="mr-auto" @click="console.log('placeholder')">NEW PROJECT</v-btn>
                     <!-- PROJECT ITEM -->
                     <ProjectItem v-for="mockProject in mockProjects" :project="mockProject" />
                 </div>
@@ -30,6 +35,8 @@ import { ref } from 'vue';
 import type { Project } from '@/types/project';
 import ProjectItem from './ProjectItem.vue';
 import SideNavigation from './SideNavigation.vue';
+import DashboardTodoItem from './DashboardTodoItem.vue';
+import OutlinedContainer from '../ui/OutlinedContainer.vue';
 
 const mockProjects = ref<Array<Project>>([{
     id: 1,
@@ -41,5 +48,6 @@ const mockProjects = ref<Array<Project>>([{
     description: "Todo Mock Description"
 }])
 
+const sortBy = ref<string>('Priority')
 const view = ref<string>('dashboard')
 </script>
