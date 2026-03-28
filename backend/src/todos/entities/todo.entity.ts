@@ -22,7 +22,7 @@ export class Todo {
     @Column({ default: [] })
     categories: Array<string>;
 
-    @Column()
+    @Column({ default: false })
     isDone: boolean;
 
     // ManyToOne erstellt ein Feld in der DB. Außerdem wird eine verbindung erstellt zu project.todos, dem OneToMany feld, welchem die daten geliefert werden für schnellere abfragen.

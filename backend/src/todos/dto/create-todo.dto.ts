@@ -24,9 +24,11 @@ export class CreateTodoDto {
     @IsOptional()
     categories: Array<string>;
 
-    @IsBoolean()
-    @IsNotEmpty()
-    isDone: boolean;
+    // isDone nur im Update Dto, da beim erstellen der wert automatisch vom entity auf false gesetzt wird und kein feld zum manipulieren dabei sein soll.
+    // @IsBoolean()
+    // @IsNotEmpty()
+    // isDone: boolean;
+
     // IsInt für ganze zahlen, IsNumber für komma zahlen
     // @IsInt()
     // @IsPositive()
