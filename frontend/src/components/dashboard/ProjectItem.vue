@@ -76,20 +76,22 @@ const mockTodos = ref<Array<Todo>>([{
     description: "Todo Mock Description",
     priority: "low",
     deadline: new Date("2026-03-27"),
-    isFinished: false
-},{
+    categories: [],
+    isDone: false
+}, {
     id: 2,
     title: "Todo Mock Title",
     description: "Todo Mock Description",
     priority: "medium",
     deadline: new Date("2026-03-27"),
-    isFinished: false
+    categories: [],
+    isDone: false
 }])
 /**
  * TODO:
  * Create views
  * LOAD PROJECTS & TODOS FROM DB
- * WATCH isFinished -> write DB
+ * WATCH isDone -> write DB
  */
 const load = ref<boolean>(false); // Placeholder to load project site later
 </script>

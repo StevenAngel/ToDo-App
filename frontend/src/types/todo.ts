@@ -4,5 +4,6 @@ export interface Todo {
     description?: string
     priority: 'low' | 'medium' | 'high'
     deadline?: Date
-    isFinished: boolean
+    categories: Array<string>
+    isDone: boolean
 }
