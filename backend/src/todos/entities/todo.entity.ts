@@ -19,8 +19,8 @@ export class Todo {
     @Column({ nullable: true })
     deadline: Date;
 
-    @Column({ default: [] })
-    categories: Array<string>;
+    @Column({ type: 'simple-json', default: [] })
+    tags: Array<string>;
 
     @Column({ default: false })
     isDone: boolean;
