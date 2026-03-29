@@ -10,3 +10,4 @@ export interface Todo {
 }
 
 export type CreateTodo = Omit<Todo, 'id' | 'isDone'>
+export type UpdateTodo = Omit<Todo, 'id' | 'project'>
