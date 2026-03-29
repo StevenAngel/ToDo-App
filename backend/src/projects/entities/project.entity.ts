@@ -13,6 +13,9 @@ export class Project {
     @Column({ nullable: true })
     description?: string;
 
+    @Column({ default: new Date() })
+    createdAt: string;
+    
     // OneToMany erstellt keine spalte in der DB, sonder schaut nur welche Zeilen zu dieser projectId gehören. Todo Entitiy todo.project hält die zugehörige projektId.
     @OneToMany(() => Todo, todo => todo.project)
     todos: Array<Todo>;
