@@ -17,7 +17,7 @@
                     <!-- SORT CONTAINER -->
                     <OutlinedContainer v-for="value in sortedContainers" :label="value">
                         <!-- DASHBOARD ITEM -->
-                        <TodoItem v-for="item in filterItems(value)" v-model="mockTodos[mockTodos.indexOf(item)]" />
+                        <TodoItem v-for="item in filterItems(value)" v-model="todos[todos.indexOf(item)]" />
                     </OutlinedContainer>
                 </div>
                 <!-- PROJECTS WRAPPER -->
@@ -89,7 +89,7 @@ const createMessage = ref({
     color: "green"
 })
 
-const mockTodos = ref<Array<Todo>>([{
+const todos = ref<Array<Todo>>([{
     id: 4,
     title: "Todo Mock Title",
     description: "Todo Mock Description",
@@ -166,6 +166,11 @@ const createNewProject = async () => {
 const loadAllProjects = async () => {
     const allProjects = await projectApi.getAll();
     projects.value = allProjects.data;
+    allProjects.data.forEach((project: Project) => {
+        if(project.todos) {
+            todos.value = [...todos.value, ...project.todos]
+        }
+    })
 }
 
 const sortedContainers = computed<Array<string>>(() => {
@@ -174,7 +179,7 @@ const sortedContainers = computed<Array<string>>(() => {
             return ['high', 'medium', 'low'];
         case 'Deadline':
             const deadlines: Array<string> = [];
-            mockTodos.value.forEach((element: Todo) => {
+            todos.value.forEach((element: Todo) => {
                 if (element.deadline) {
                     if (!deadlines.includes(element.deadline)) deadlines.push(element.deadline);
                 }
@@ -185,7 +190,7 @@ const sortedContainers = computed<Array<string>>(() => {
             return deadlines;
         case 'Category':
             const categories: Array<string> = [];
-            mockTodos.value.forEach((element: Todo) => {
+            todos.value.forEach((element: Todo) => {
                 element.categories.forEach((category: string) => {
                     if (!categories.includes(category)) categories.push(category);
                 });
@@ -195,7 +200,7 @@ const sortedContainers = computed<Array<string>>(() => {
             return categories;
         case 'Project':
             const projects: Array<string> = [];
-            mockTodos.value.forEach((element: Todo) => {
+            todos.value.forEach((element: Todo) => {
                 if (element.project) {
                     if (!projects.includes(element.project)) projects.push(element.project);
                 }
@@ -210,23 +215,23 @@ const sortedContainers = computed<Array<string>>(() => {
 const filterItems = (containerValue: string): Array<Todo> => {
     switch (sortBy.value) {
         case 'Priority':
-            return mockTodos.value.filter((item: Todo) => item.priority == containerValue);
+            return todos.value.filter((item: Todo) => item.priority == containerValue);
         case 'Deadline':
             if (containerValue == "No Deadline") {
-                return mockTodos.value.filter((item: Todo) => item.deadline == undefined);
+                return todos.value.filter((item: Todo) => item.deadline == undefined);
             } else {
-                return mockTodos.value.filter((item: Todo) => item.deadline == containerValue);
+                return todos.value.filter((item: Todo) => item.deadline == containerValue);
             }
         case 'Category':
             if (containerValue == "No Category") {
-                return mockTodos.value.filter((item: Todo) => item.categories.length == 0);
+                return todos.value.filter((item: Todo) => item.categories.length == 0);
             } else {
-                return mockTodos.value.filter((item: Todo) => item.categories.some(category => containerValue.includes(category)));
+                return todos.value.filter((item: Todo) => item.categories.some(category => containerValue.includes(category)));
             }
         case 'Project':
-            return mockTodos.value.filter((item: Todo) => item.project == containerValue);
+            return todos.value.filter((item: Todo) => item.project == containerValue);
         default:
-            return mockTodos.value;
+            return todos.value;
     }
 }
 

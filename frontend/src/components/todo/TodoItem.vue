@@ -1,5 +1,5 @@
 <template>
-    <v-list-item :class="[priorityClass, 'rounded-lg']" @click="todo.isDone = !todo.isDone">
+    <v-list-item :class="[priorityClass, 'rounded-lg']" @click.stop="todo.isDone = !todo.isDone">
         <template #prepend>
             <!-- click.stop stoppt den click, da wir schon auf dem list item den click handlen -->
             <v-checkbox-btn :model-value="todo.isDone" readonly></v-checkbox-btn>
