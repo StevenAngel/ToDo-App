@@ -25,6 +25,9 @@ export class Todo {
     @Column({ default: false })
     isDone: boolean;
 
+    @Column({ default: new Date() })
+    createdAt: Date;
+
     // ManyToOne erstellt ein Feld in der DB. Außerdem wird eine verbindung erstellt zu project.todos, dem OneToMany feld, welchem die daten geliefert werden für schnellere abfragen.
     @ManyToOne(() => Project, project => project.todos, {
         // Löscht alle todos wenn project gelöscht wird

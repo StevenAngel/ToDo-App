@@ -25,7 +25,7 @@ export class UpdateTodoDto extends PartialType(CreateTodoDto) {
         @IsArray()
         @IsString({ each: true })
         @IsOptional()
-        categories: Array<string>;
+        tags: Array<string>;
 
         @IsBoolean()
         @IsOptional()

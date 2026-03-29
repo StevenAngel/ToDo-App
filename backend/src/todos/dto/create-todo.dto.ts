@@ -22,7 +22,7 @@ export class CreateTodoDto {
     @IsArray()
     @IsString({ each: true })
     @IsOptional()
-    categories: Array<string>;
+    tags: Array<string>;
 
     // isDone nur im Update Dto, da beim erstellen der wert automatisch vom entity auf false gesetzt wird und kein feld zum manipulieren dabei sein soll.
     // @IsBoolean()
