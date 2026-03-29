@@ -12,12 +12,8 @@ export class TodosService {
     private todoRepository: Repository<Todo>
   ) { }
 
-  async create(createTodoDto: CreateTodoDto, projectId: number) {
-    const todo = this.todoRepository.create({
-      ...createTodoDto,
-      // { id: projectId } verknüpft zur project entity, da im entity project als Project entity angegeben ist.
-      project: { id: projectId }
-    });
+  async create(createTodoDto: CreateTodoDto) {
+    const todo = this.todoRepository.create(createTodoDto);
     return await this.todoRepository.save(todo);
   }
 

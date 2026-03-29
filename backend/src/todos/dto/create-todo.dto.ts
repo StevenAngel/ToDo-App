@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsDateString, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsArray, IsInt, IsPositive, IsDateString, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Priority } from "../enums/priority.enum";
 
 export class CreateTodoDto {
@@ -30,8 +30,8 @@ export class CreateTodoDto {
     // isDone: boolean;
 
     // IsInt für ganze zahlen, IsNumber für komma zahlen
-    // @IsInt()
-    // @IsPositive()
-    // @IsNotEmpty()
-    // projectId: number;
+    @IsInt()
+    @IsPositive()
+    @IsNotEmpty()
+    projectId: number;
 }
