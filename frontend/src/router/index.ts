@@ -7,6 +7,11 @@ const router = createRouter({
             path: "/",
             name: "home",
             component: () => import("../views/DashboardView.vue"),
+        },
+        {
+            path: "/project/:id",
+            name: "project",
+            component: () => import("../views/ProjectView.vue"),
         }
     ]
 });
