@@ -8,3 +8,5 @@ export interface Todo {
     isDone: boolean
     project?: string
 }
+
+export type CreateTodo = Omit<Todo, 'id' | 'isDone'>
