@@ -68,7 +68,7 @@ const form = ref<CreateTodo>({
     priority: 'low',
     deadline: undefined,
     tags: [],
-    projectId: route.params.id as number,
+    projectId: Number(route.params.id),
 });
 
 const createTodo = async () => {

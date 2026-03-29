@@ -20,7 +20,7 @@ export class TodosService {
 
   async findAll(projectId: number) {
     return await this.todoRepository.find({
-      where: { project: { id: projectId } },
+      where: projectId ? { project: { id: projectId } }: {},
       // relations 'project', damit die ManyToOne entry angezeigt wird und das Project Object mitgesendet wird.
       // Ein anderer weg project immer anzuzeigen wäre im MnayToOne { eager: true }
       // relations: [
