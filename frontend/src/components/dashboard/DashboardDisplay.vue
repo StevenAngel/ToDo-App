@@ -41,11 +41,14 @@
                                         </v-card-title>
                                         <v-divider></v-divider>
                                         <v-container>
-                                            <v-text-field label="Title*" variant="outlined" v-model="newProject.title"></v-text-field>
-                                            <v-text-field label="Description" variant="outlined" v-model="newProject.description"></v-text-field>
+                                            <v-text-field label="Title*" variant="outlined"
+                                                v-model="newProject.title"></v-text-field>
+                                            <v-text-field label="Description" variant="outlined"
+                                                v-model="newProject.description"></v-text-field>
                                             <div class="d-flex ga-2">
                                                 <v-spacer></v-spacer>
-                                                <v-btn @click="isActive.value = false; createNewProject()" variant="tonal" color="green">Create</v-btn>
+                                                <v-btn @click="isActive.value = false; createNewProject()"
+                                                    variant="tonal" color="green">Create</v-btn>
                                                 <v-btn @click="isActive.value = false" variant="tonal">Cancel</v-btn>
                                             </div>
                                         </v-container>
@@ -55,15 +58,18 @@
                         </template>
                     </v-dialog>
                     <!-- PROJECT ITEM -->
-                    <ProjectItem v-for="mockProject in mockProjects" :project="mockProject" />
+                    <ProjectItem v-for="mockProject in projects" :project="mockProject" />
                 </div>
             </v-col>
         </v-row>
+        <v-snackbar v-model="createMessage.show" :timeout="5000" color="green">
+            {{ createMessage.message }}
+        </v-snackbar>
     </v-container>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import type { Project, CreateProject } from '@/types/project';
 import ProjectItem from './ProjectItem.vue';
 import SideNavigation from './SideNavigation.vue';
@@ -75,6 +81,12 @@ import { projectApi } from '@/api/projects';
 const newProject = ref<CreateProject>({
     title: '',
     description: undefined
+})
+
+const createMessage = ref({
+    show: false,
+    message: "Project created successfully",
+    color: "green"
 })
 
 const mockTodos = ref<Array<Todo>>([{
@@ -124,7 +136,7 @@ const mockTodos = ref<Array<Todo>>([{
     project: "Mock Project"
 }]);
 
-const mockProjects = ref<Array<Project>>([{
+const projects = ref<Array<Project>>([{
     id: 1,
     title: "Todo Mock Title",
     description: "Todo Mock Description"
@@ -138,7 +150,22 @@ const sortBy = ref<string>('Priority');
 const view = ref<string>('dashboard');
 
 const createNewProject = async () => {
-    await projectApi.create(newProject.value)
+    const project = await projectApi.create(newProject.value);
+    if (project.status == 201) {
+        createMessage.value.message = "Project created successfully";
+        createMessage.value.color = "green";
+        createMessage.value.show = true;
+        loadAllProjects();
+    } else {
+        createMessage.value.message = "Something went wrong, please try again";
+        createMessage.value.color = "red";
+        createMessage.value.show = true;
+    }
+}
+
+const loadAllProjects = async () => {
+    const allProjects = await projectApi.getAll();
+    projects.value = allProjects.data;
 }
 
 const sortedContainers = computed<Array<string>>(() => {
@@ -202,4 +229,6 @@ const filterItems = (containerValue: string): Array<Todo> => {
             return mockTodos.value;
     }
 }
+
+onMounted(loadAllProjects);
 </script>
