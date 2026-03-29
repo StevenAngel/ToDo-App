@@ -22,11 +22,11 @@ export class ProjectsService {
   }
 
   async findAll() {
-    return await this.projectRepository.find();
+    return await this.projectRepository.find({ relations: ['todos'] });
   }
 
   async findOne(id: number) {
-    return await this.projectRepository.findOneBy({ id: id });
+    return await this.projectRepository.findOne({ where: { id: id }, relations: ['todos'] });
   }
 
   async update(id: number, updateProjectDto: UpdateProjectDto) {
