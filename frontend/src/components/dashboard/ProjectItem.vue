@@ -94,5 +94,6 @@ async function loadTodos() {
 }
 
 onMounted(loadTodos)
+
 const load = ref<boolean>(false); // Placeholder to load project site later
 </script>

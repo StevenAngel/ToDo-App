@@ -1,10 +1,10 @@
 import { api } from "./index.ts";
-import type { Project } from "@/types/project.ts";
+import type { Project, CreateProject, UpdateProject } from "@/types/project.ts";
 
 export const projectApi = {
-    create: (project: Project) => api.post<Project>(`/project`, project),
+    create: (project: CreateProject) => api.post<CreateProject>(`/projects`, project),
     getAll: () => api.get<Project[]>('/projects'),
     getById: (id: string) => api.get<Project>(`/projects/${id}`),
-    update: (id: string, project: Project) => api.patch<Project>(`/projects/${id}`, project),
+    update: (id: string, project: UpdateProject) => api.patch<UpdateProject>(`/projects/${id}`, project),
     delete: (id: string) => api.delete<Project>(`/projects/${id}`)
 }

@@ -6,3 +6,6 @@ export interface Project {
     description?: string
     todos?: Todo[] // optional for lazy loading, wenn project geöffnet wird
 }
+
+export type CreateProject = Omit<Project, 'id'>
+export type UpdateProject = Omit<Project, 'id' | 'todos'>

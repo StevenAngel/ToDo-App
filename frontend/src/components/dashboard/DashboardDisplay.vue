@@ -41,11 +41,11 @@
                                         </v-card-title>
                                         <v-divider></v-divider>
                                         <v-container>
-                                            <v-text-field label="Title*" variant="outlined"></v-text-field>
-                                            <v-text-field label="Description" variant="outlined"></v-text-field>
+                                            <v-text-field label="Title*" variant="outlined" v-model="newProject.title"></v-text-field>
+                                            <v-text-field label="Description" variant="outlined" v-model="newProject.description"></v-text-field>
                                             <div class="d-flex ga-2">
                                                 <v-spacer></v-spacer>
-                                                <v-btn @click="isActive.value = false" variant="tonal" color="green">Create</v-btn>
+                                                <v-btn @click="isActive.value = false; createNewProject()" variant="tonal" color="green">Create</v-btn>
                                                 <v-btn @click="isActive.value = false" variant="tonal">Cancel</v-btn>
                                             </div>
                                         </v-container>
@@ -64,12 +64,18 @@
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-import type { Project } from '@/types/project';
+import type { Project, CreateProject } from '@/types/project';
 import ProjectItem from './ProjectItem.vue';
 import SideNavigation from './SideNavigation.vue';
 import OutlinedContainer from '../ui/OutlinedContainer.vue';
 import TodoItem from '../todo/TodoItem.vue';
 import type { Todo } from '@/types/todo';
+import { projectApi } from '@/api/projects';
+
+const newProject = ref<CreateProject>({
+    title: '',
+    description: undefined
+})
 
 const mockTodos = ref<Array<Todo>>([{
     id: 4,
@@ -128,8 +134,12 @@ const mockProjects = ref<Array<Project>>([{
     description: "Todo Mock Description"
 }]);
 
-const sortBy = ref<string>('Priority')
-const view = ref<string>('dashboard')
+const sortBy = ref<string>('Priority');
+const view = ref<string>('dashboard');
+
+const createNewProject = async () => {
+    await projectApi.create(newProject.value)
+}
 
 const sortedContainers = computed<Array<string>>(() => {
     switch (sortBy.value) {
