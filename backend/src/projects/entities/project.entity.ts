@@ -7,7 +7,7 @@ export class Project {
     id: number;
 
     @Column()
-    name: string;
+    title: string;
 
     // nullable: true für ein optionales feld
     @Column({ nullable: true })

@@ -4,7 +4,7 @@ import { Priority } from "../enums/priority.enum";
 export class CreateTodoDto {
     @IsString()
     @IsNotEmpty()
-    name: string;
+    title: string;
 
     @IsString()
     @IsOptional()

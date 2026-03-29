@@ -8,7 +8,7 @@ export class UpdateTodoDto extends PartialType(CreateTodoDto) {
         // Alles im updateDto ist optional, da man nur teilweise einzelne felder ändern möchte
         @IsString()
         @IsOptional()
-        name: string;
+        title: string;
 
         @IsString()
         @IsOptional()

@@ -5,7 +5,7 @@ import { CreateTodoDto } from "src/todos/dto/create-todo.dto";
 export class CreateProjectDto {
     @IsString()
     @IsNotEmpty()
-    name: string;
+    title: string;
 
     @IsString()
     @IsOptional()
