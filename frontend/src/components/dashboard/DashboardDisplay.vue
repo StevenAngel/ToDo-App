@@ -68,7 +68,7 @@ import type { Project } from '@/types/project';
 import ProjectItem from './ProjectItem.vue';
 import SideNavigation from './SideNavigation.vue';
 import OutlinedContainer from '../ui/OutlinedContainer.vue';
-import TodoItem from './TodoItem.vue';
+import TodoItem from '../todo/TodoItem.vue';
 import type { Todo } from '@/types/todo';
 
 const mockTodos = ref<Array<Todo>>([{

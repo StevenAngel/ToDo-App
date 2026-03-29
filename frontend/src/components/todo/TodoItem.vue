@@ -34,8 +34,6 @@ import { computed, type Ref } from 'vue';
 const todo: Ref<Todo> = defineModel<Todo>({ required: true });
 const priorityColor = computed(() => todo.value.priority == "low" ? "green" : todo.value.priority == "medium" ? "orange" : "red");
 const priorityClass = computed(() => "priority-" + priorityColor.value)
-console.log(todo.value, priorityColor)
-
 </script>
 
 <style scoped>

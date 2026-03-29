@@ -64,7 +64,7 @@
 import type { Todo } from '@/types/todo';
 import { ref } from 'vue';
 import type { Project } from '@/types/project';
-import TodoItem from './TodoItem.vue';
+import TodoItem from '../todo/TodoItem.vue';
 
 // TypeScript props weg. ['title', 'description'] == JS
 // Zugreifen geht mit project.title oder props.project.titel, da <template> props automatisch auflöst
