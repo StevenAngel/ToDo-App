@@ -5,7 +5,7 @@
             <v-checkbox-btn :model-value="todo.isDone" readonly></v-checkbox-btn>
         </template>
         <v-list-item-title :class="{ 'text-decoration-line-through': todo.isDone }">{{ todo.title
-            }}</v-list-item-title>
+        }}</v-list-item-title>
         <v-list-item-subtitle v-if="todo.description">{{ todo.description }}</v-list-item-subtitle>
 
         <template #append>
@@ -27,13 +27,30 @@
     </v-list-item>
 </template>
 <script lang="ts" setup>
-import type { Todo } from '@/types/todo';
-import { computed, type Ref } from 'vue';
-
+import type { Todo, UpdateTodo } from '@/types/todo';
+import { computed, watch, type Ref } from 'vue';
+import { todoApi } from '@/api/todos';
 // required: true, damit error geworfen wird, wenn kein v-model im parent angegeben
 const todo: Ref<Todo> = defineModel<Todo>({ required: true });
 const priorityColor = computed(() => todo.value.priority == "low" ? "green" : todo.value.priority == "medium" ? "orange" : "red");
-const priorityClass = computed(() => "priority-" + priorityColor.value)
+const priorityClass = computed(() => "priority-" + priorityColor.value);
+
+watch(todo.value, async (newValue,) => {
+    const updateTodo: UpdateTodo = {
+        title: newValue.title,
+        description: newValue.description,
+        priority: newValue.priority,
+        deadline: newValue.deadline,
+        tags: newValue.tags,
+        isDone: newValue.isDone
+    }
+
+    try {
+        await todoApi.update(newValue.id.toString(), updateTodo);
+    } catch(e) {
+        console.error(e);
+    }
+})
 </script>
 
 <style scoped>

@@ -69,7 +69,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import type { Project, CreateProject } from '@/types/project';
 import ProjectItem from './ProjectItem.vue';
 import SideNavigation from './SideNavigation.vue';
@@ -185,10 +185,6 @@ const filterItems = (containerValue: string): Array<Todo> => {
             return todos.value;
     }
 }
-
-watch(projects.value, (newValue, oldValue) => {
-    
-})
 
 onMounted(loadAllProjects);
 </script>
