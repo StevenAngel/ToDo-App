@@ -11,7 +11,7 @@
                 <!-- DASHBOARD WRAPPER -->
                 <div v-show="view == 'dashboard'" class="d-flex flex-column ga-4">
                     <!-- SORT TODOS -->
-                    <v-select label="Sort" v-model="sortBy" :items="['Priority', 'Deadline', 'Category', 'Project']"
+                    <v-select label="Sort" v-model="sortBy" :items="['Priority', 'Deadline', 'Tag', 'Project']"
                         class="ml-auto" width="150" hide-details>
                     </v-select>
                     <!-- SORT CONTAINER -->
@@ -69,14 +69,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import type { Project, CreateProject } from '@/types/project';
 import ProjectItem from './ProjectItem.vue';
 import SideNavigation from './SideNavigation.vue';
 import OutlinedContainer from '../ui/OutlinedContainer.vue';
 import TodoItem from '../todo/TodoItem.vue';
-import type { Todo } from '@/types/todo';
+import type { Todo, UpdateTodo } from '@/types/todo';
 import { projectApi } from '@/api/projects';
+import { todoApi } from '@/api/todos';
 
 const newProject = ref<CreateProject>({
     title: '',
@@ -89,63 +90,8 @@ const createMessage = ref({
     color: "green"
 })
 
-const todos = ref<Array<Todo>>([{
-    id: 4,
-    title: "Todo Mock Title",
-    description: "Todo Mock Description",
-    priority: "medium",
-    deadline: "2027-03-28",
-    categories: [],
-    isDone: false,
-    project: "Mock Project2"
-}, {
-    id: 1,
-    title: "Todo Mock Title",
-    description: "Todo Mock Description",
-    priority: "low",
-    deadline: "2026-03-28",
-    categories: [],
-    isDone: false,
-    project: "Mock Project2"
-
-}, {
-    id: 2,
-    title: "Todo Mock Title",
-    description: "Todo Mock Description",
-    priority: "medium",
-    deadline: "2026-03-27",
-    categories: [],
-    isDone: false,
-    project: "Mock Project2"
-}, {
-    id: 5,
-    title: "Todo Mock Title",
-    description: "Todo Mock Description",
-    priority: "low",
-    deadline: "2026-03-27",
-    categories: [],
-    isDone: false,
-    project: "Mock Project"
-}, {
-    id: 3,
-    title: "Todo Mock Title",
-    description: "Todo Mock Description",
-    priority: "high",
-    categories: ['Mock Category', 'Category 2'],
-    isDone: false,
-    project: "Mock Project"
-}]);
-
-const projects = ref<Array<Project>>([{
-    id: 1,
-    title: "Todo Mock Title",
-    description: "Todo Mock Description"
-}, {
-    id: 1,
-    title: "Todo Mock Title",
-    description: "Todo Mock Description"
-}]);
-
+const todos = ref<Array<Todo>>([]);
+const projects = ref<Array<Project>>([]);
 const sortBy = ref<string>('Priority');
 const view = ref<string>('dashboard');
 
@@ -168,9 +114,14 @@ const loadAllProjects = async () => {
     projects.value = allProjects.data;
     allProjects.data.forEach((project: Project) => {
         if(project.todos) {
-            todos.value = [...todos.value, ...project.todos]
+            todos.value = [...todos.value, ...project.todos.map(value => {return {...value, project: project.title}})]
         }
     })
+}
+
+const updateTodo = async (id: string, value: UpdateTodo) => {
+    const todo = await todoApi.update(id, value)
+    console.log(todo)
 }
 
 const sortedContainers = computed<Array<string>>(() => {
@@ -188,16 +139,16 @@ const sortedContainers = computed<Array<string>>(() => {
             deadlines.sort((a: string, b: string) => new Date(a).getTime() - new Date(b).getTime());
             deadlines.push('No Deadline');
             return deadlines;
-        case 'Category':
-            const categories: Array<string> = [];
+        case 'Tag':
+            const tags: Array<string> = [];
             todos.value.forEach((element: Todo) => {
-                element.categories.forEach((category: string) => {
-                    if (!categories.includes(category)) categories.push(category);
+                element.tags.forEach((tag: string) => {
+                    if (!tags.includes(tag)) tags.push(tag);
                 });
             });
 
-            categories.push("No Category");
-            return categories;
+            tags.push("No Tags");
+            return tags;
         case 'Project':
             const projects: Array<string> = [];
             todos.value.forEach((element: Todo) => {
@@ -222,11 +173,11 @@ const filterItems = (containerValue: string): Array<Todo> => {
             } else {
                 return todos.value.filter((item: Todo) => item.deadline == containerValue);
             }
-        case 'Category':
-            if (containerValue == "No Category") {
-                return todos.value.filter((item: Todo) => item.categories.length == 0);
+        case 'Tag':
+            if (containerValue == "No Tags") {
+                return todos.value.filter((item: Todo) => item.tags.length == 0);
             } else {
-                return todos.value.filter((item: Todo) => item.categories.some(category => containerValue.includes(category)));
+                return todos.value.filter((item: Todo) => item.tags.some(tag => containerValue.includes(tag)));
             }
         case 'Project':
             return todos.value.filter((item: Todo) => item.project == containerValue);
@@ -234,6 +185,10 @@ const filterItems = (containerValue: string): Array<Todo> => {
             return todos.value;
     }
 }
+
+watch(projects.value, (newValue, oldValue) => {
+    
+})
 
 onMounted(loadAllProjects);
 </script>
