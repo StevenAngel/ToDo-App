@@ -9,6 +9,10 @@ const router = createRouter({
             component: () => import("../views/DashboardView.vue"),
         },
         {
+            path: "/project",
+            redirect: "/"
+        },
+        {
             path: "/project/:id",
             name: "project",
             component: () => import("../views/ProjectView.vue"),

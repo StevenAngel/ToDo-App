@@ -18,14 +18,12 @@
                             <v-chip value="medium" color="orange">medium</v-chip>
                             <v-chip value="high" color="red">high</v-chip>
                         </v-chip-group>
-                        <!-- <v-date-picker :rules=[rules.date] :min="new Date()" v-model="form.deadline"></v-date-picker> -->
                         <v-menu v-model="dateOpen" :close-on-content-click="false">
                             <template #activator="{ props }">
                                 <v-text-field v-bind="props" v-model="dateString" label="Deadline"
                                     prepend-inner-icon="mdi-calendar" readonly hide-details="auto" clearable
                                     @click:clear="form.deadline = undefined" />
                             </template>
-
                             <v-date-picker v-model="form.deadline" :min="new Date()"
                                 @update:model-value="dateOpen = false" />
                         </v-menu>
@@ -46,7 +44,7 @@ const dateString = computed<string | undefined>(() => {
     if (form.value.deadline) {
         return new Date(form.value.deadline).toLocaleDateString()
     }
-    
+
     return undefined;
 })
 const form = ref<CreateTodo>({
