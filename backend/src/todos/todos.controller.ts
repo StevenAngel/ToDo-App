@@ -3,23 +3,23 @@ import { TodosService } from './todos.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 
-@Controller('projects/:projectId/todos')
+@Controller('todos')
 export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
   @Post()
   create(
-    @Param('projectId') projectId: string,
+    // @Param('projectId') projectId: string, nun in body
     @Body() createTodoDto: CreateTodoDto
   ) {
-    return this.todosService.create(createTodoDto, Number(projectId));
+    return this.todosService.create(createTodoDto);
   }
 
-  @Get()
+  @Get('project/:projectId')
   findAll(
-    @Param('projectId') projectId: string
+    @Param(':projectId') projectId: string
   ) {
-    return this.todosService.findAll(Number(projectId));
+    return this.todosService.findAll(+projectId);
   }
 
   @Get(':id')
