@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-sheet>
+        <v-sheet class="rounded">
             <v-tabs v-model="tab" grow>
                 <v-tab value="open">Open</v-tab>
                 <v-tab value="done">Done</v-tab>
