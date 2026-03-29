@@ -58,7 +58,7 @@
                         </template>
                     </v-dialog>
                     <!-- PROJECT ITEM -->
-                    <ProjectItem v-for="mockProject in projects" :project="mockProject" />
+                    <ProjectItem v-for="project in projects" :project="project" />
                 </div>
             </v-col>
         </v-row>
