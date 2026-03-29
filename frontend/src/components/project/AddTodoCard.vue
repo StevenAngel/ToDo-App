@@ -8,7 +8,7 @@
                         <v-text-field label="Title" :rules="[rules.required]" v-model="form.title"
                             hide-details="auto"></v-text-field>
                         <v-text-field label="Description" v-model="form.description" hide-details="auto"></v-text-field>
-                        <v-combobox v-model="form.categories" chips multiple closable-chips label="Add Tags"
+                        <v-combobox v-model="form.tags" chips multiple closable-chips label="Add Tags"
                             hint="Press enter to add" hide-details="auto"></v-combobox>
                     </v-col>
                     <v-col cols="3" class="d-flex flex-column ga-2">
@@ -27,7 +27,7 @@
                             <v-date-picker v-model="form.deadline" :min="new Date()"
                                 @update:model-value="dateOpen = false" />
                         </v-menu>
-                        <v-btn type="submit" color="green" variant="tonal" class="w-100">Add Todo</v-btn>
+                        <v-btn type="submit" color="green" variant="tonal" class="w-100" @click="createTodo()">Add Todo</v-btn>
                     </v-col>
                 </v-row>
             </v-form>
@@ -38,7 +38,11 @@
 import { ref, computed } from 'vue';
 import { rules } from '@/utils/rules';
 import type { CreateTodo } from '@/types/todo';
+import { todoApi } from '@/api/todos';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
+const emit = defineEmits(['created'])
 const dateOpen = ref<boolean>(false);
 const dateString = computed<string | undefined>(() => {
     if (form.value.deadline) {
@@ -46,14 +50,24 @@ const dateString = computed<string | undefined>(() => {
     }
 
     return undefined;
-})
+});
+
 const form = ref<CreateTodo>({
     title: '',
     description: '',
     priority: 'low',
     deadline: undefined,
-    categories: [],
-    project: undefined,
+    tags: [],
+    project: route.params.id as string,
 });
+
+const createTodo = async () => {
+    try {
+        const todo = await todoApi.create(form.value);
+        if (todo.status == 201) emit('created')
+    } catch (e) {
+        console.error(e)
+    }
+}
 </script>
 <style scoped></style>

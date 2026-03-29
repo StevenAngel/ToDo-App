@@ -62,7 +62,7 @@
                 </div>
             </v-col>
         </v-row>
-        <v-snackbar v-model="createMessage.show" :timeout="5000" color="green">
+        <v-snackbar v-model="createMessage.show" :timeout="5000" :color="createMessage.color">
             {{ createMessage.message }}
         </v-snackbar>
     </v-container>
@@ -96,13 +96,16 @@ const sortBy = ref<string>('Priority');
 const view = ref<string>('dashboard');
 
 const createNewProject = async () => {
-    const project = await projectApi.create(newProject.value);
-    if (project.status == 201) {
-        createMessage.value.message = "Project created successfully";
-        createMessage.value.color = "green";
-        createMessage.value.show = true;
-        loadAllProjects();
-    } else {
+    try {
+        const project = await projectApi.create(newProject.value);
+        if (project.status == 201) {
+            createMessage.value.message = "Project created successfully";
+            createMessage.value.color = "green";
+            createMessage.value.show = true;
+            loadAllProjects();
+        }
+    } catch (e) {
+        console.error(e);
         createMessage.value.message = "Something went wrong, please try again";
         createMessage.value.color = "red";
         createMessage.value.show = true;

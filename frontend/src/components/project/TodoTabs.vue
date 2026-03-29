@@ -30,7 +30,7 @@ const mockTodos = ref<Array<Todo>>([{
     description: "Todo Mock Description",
     priority: "low",
     deadline: "2026-03-27",
-    categories: [],
+    tags: [],
     isDone: false
 }, {
     id: 2,
@@ -38,7 +38,7 @@ const mockTodos = ref<Array<Todo>>([{
     description: "Todo Mock Description",
     priority: "medium",
     deadline: "2026-03-27",
-    categories: [],
+    tags: [],
     isDone: false
 }])
 const tab = ref<string>('open')

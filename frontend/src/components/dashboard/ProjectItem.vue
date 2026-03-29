@@ -77,8 +77,8 @@ const emit = defineEmits<{deleted: [id: string]}>();
 const showProject = ref<boolean>(false);
 const deleteProject = async () => {
     try {
-        await projectApi.delete(props.project.id.toString());
-        emit('deleted', props.project.id.toString());
+        const deleted = await projectApi.delete(props.project.id.toString());
+        if(deleted.status == 200) emit('deleted', props.project.id.toString());
     } catch (e) {
         console.error(e);
     }
