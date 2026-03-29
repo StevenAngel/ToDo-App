@@ -1,5 +1,7 @@
 <template>
-    <v-card hover @click="load = !load">
+    <!-- Eingebauter :to router-link von vuetify in v-card -->
+    <!-- Doch @click benutzen, damit der btn mit click.stop funktioniert, ansonsten wird auch mit dem button die neue seite geladen -->
+    <v-card hover @click="router.push({ name: 'project', params: { id: project.id } })">
         <v-card-item>
             <!-- vuetify hat in manchen elementen "slots" die man füllen kann, dies macht man hauptsächlich mit <template>. v-slot:prepend oder kurz (#prepend) sagt vuetify, dass dieses element vorne angehängt werden soll.   -->
             <template #prepend>
@@ -10,7 +12,7 @@
                 {{ project.description }}
             </v-card-subtitle>
             <template #append>
-                <v-btn flat @click="showProject = !showProject">
+                <v-btn flat @click.stop="showProject = !showProject">
                     <v-icon :icon="showProject ? 'mdi-chevron-up' : 'mdi-chevron-down'" />
                 </v-btn>
             </template>
@@ -21,8 +23,7 @@
                 <v-list class="d-flex flex-column ga-2">
                     <!-- TODO ITEM -->
                     <!-- v-for="mockTodo in mockTodos" geht nicht, da mockTodo eine lokale variable ist, die nicht geschrieben werden kann. Man muss den index nutzen  -->
-                    <TodoItem v-for="(mockTodo, index) in mockTodos" :key="mockTodo.id"
-                        v-model="mockTodos[index]" />
+                    <TodoItem v-for="(todo, index) in project.todos" :key="todo.id" v-model="project.todos![index]" />
                 </v-list>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -65,35 +66,11 @@ import type { Todo } from '@/types/todo';
 import { ref, onMounted } from 'vue';
 import type { Project } from '@/types/project';
 import TodoItem from '../todo/TodoItem.vue';
-import { projectApi } from '@/api/projects';
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 // TypeScript props weg. ['title', 'description'] == JS
 // Zugreifen geht mit project.title oder props.project.titel, da <template> props automatisch auflöst
 const props = defineProps<{ project: Project }>()
 const showProject = ref<boolean>(false);
-const mockTodos = ref<Array<Todo>>([{
-    id: 1,
-    title: "Todo Mock Title",
-    description: "Todo Mock Description",
-    priority: "low",
-    deadline: "2026-03-27",
-    categories: [],
-    isDone: false
-}, {
-    id: 2,
-    title: "Todo Mock Title",
-    description: "Todo Mock Description",
-    priority: "medium",
-    deadline: "2026-03-27",
-    categories: [],
-    isDone: false
-}])
-
-async function loadTodos() {
-    console.log(await projectApi.getAll())
-}
-
-onMounted(loadTodos)
-
-const load = ref<boolean>(false); // Placeholder to load project site later
 </script>
