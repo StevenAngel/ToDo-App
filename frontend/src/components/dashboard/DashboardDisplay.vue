@@ -58,7 +58,7 @@
                         </template>
                     </v-dialog>
                     <!-- PROJECT ITEM -->
-                    <ProjectItem v-for="project in projects" :project="project" />
+                    <ProjectItem v-for="project in projects" :project="project" @deleted="loadAllProjects()" />
                 </div>
             </v-col>
         </v-row>
@@ -112,11 +112,13 @@ const createNewProject = async () => {
 const loadAllProjects = async () => {
     const allProjects = await projectApi.getAll();
     projects.value = allProjects.data;
+    let localTodos: Array<Todo> = [];
     allProjects.data.forEach((project: Project) => {
-        if(project.todos) {
-            todos.value = [...todos.value, ...project.todos.map(value => {return {...value, project: project.title}})]
+        if (project.todos) {
+            localTodos = [...localTodos, ...project.todos.map(value => { return { ...value, project: project.title } })];
         }
     })
+    todos.value = localTodos;
 }
 
 const updateTodo = async (id: string, value: UpdateTodo) => {

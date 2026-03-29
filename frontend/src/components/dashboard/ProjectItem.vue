@@ -44,11 +44,13 @@
                                             Do you really want to delete this project?
                                         </v-card-title>
                                         <v-card-text>
-                                            Deleting this project will automatically delete all todos irreversible.
+                                            Deleting this project will permanently delete all associated todos. This
+                                            action cannot be undone.
                                         </v-card-text>
                                         <v-card-actions>
                                             <v-spacer></v-spacer>
-                                            <v-btn @click="isActive.value = false" color="red">Delete</v-btn>
+                                            <v-btn @click="isActive.value = false; deleteProject()"
+                                                color="red">Delete</v-btn>
                                             <v-btn @click="isActive.value = false">Cancel</v-btn>
                                         </v-card-actions>
                                     </v-card>
@@ -62,15 +64,23 @@
     </v-card>
 </template>
 <script lang="ts" setup>
-import type { Todo } from '@/types/todo';
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import type { Project } from '@/types/project';
+import { projectApi } from '@/api/projects';
 import TodoItem from '../todo/TodoItem.vue';
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
+import { useRouter } from 'vue-router';
+const router = useRouter();
 // TypeScript props weg. ['title', 'description'] == JS
 // Zugreifen geht mit project.title oder props.project.titel, da <template> props automatisch auflöst
-const props = defineProps<{ project: Project }>()
+const props = defineProps<{ project: Project }>();
+const emit = defineEmits<{deleted: [id: string]}>();
 const showProject = ref<boolean>(false);
+const deleteProject = async () => {
+    try {
+        await projectApi.delete(props.project.id.toString());
+        emit('deleted', props.project.id.toString());
+    } catch (e) {
+        console.error(e);
+    }
+}
 </script>
