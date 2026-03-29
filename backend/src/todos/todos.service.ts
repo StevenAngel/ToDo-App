@@ -13,7 +13,8 @@ export class TodosService {
   ) { }
 
   async create(createTodoDto: CreateTodoDto) {
-    const todo = this.todoRepository.create(createTodoDto);
+    const { projectId, ...data } = createTodoDto;
+    const todo = this.todoRepository.create({ ...data, project: { id: projectId } });
     return await this.todoRepository.save(todo);
   }
 
