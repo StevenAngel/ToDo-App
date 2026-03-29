@@ -62,9 +62,10 @@
 </template>
 <script lang="ts" setup>
 import type { Todo } from '@/types/todo';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import type { Project } from '@/types/project';
 import TodoItem from '../todo/TodoItem.vue';
+import { projectApi } from '@/api/projects';
 
 // TypeScript props weg. ['title', 'description'] == JS
 // Zugreifen geht mit project.title oder props.project.titel, da <template> props automatisch auflöst
@@ -87,11 +88,11 @@ const mockTodos = ref<Array<Todo>>([{
     categories: [],
     isDone: false
 }])
-/**
- * TODO:
- * Create views
- * LOAD PROJECTS & TODOS FROM DB
- * WATCH isDone -> write DB
- */
+
+async function loadTodos() {
+    console.log(await projectApi.getAll())
+}
+
+onMounted(loadTodos)
 const load = ref<boolean>(false); // Placeholder to load project site later
 </script>
