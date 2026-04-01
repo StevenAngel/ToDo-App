@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Project } from "../../projects/entities/project.entity";
 import { Priority } from "../enums/priority.enum";
 
@@ -25,7 +25,9 @@ export class Todo {
     @Column({ default: false })
     isDone: boolean;
 
-    @Column({ default: new Date() })
+    // CreateDateColumn() setzt den neusten zeitpunkt bei creation. default: new Date() setzt den zeitpunkt einmal beim start der app und wird dann immer wieder verwendet.
+    @CreateDateColumn()
+    // @Column({ default: new Date() })
     createdAt: Date;
 
     // ManyToOne erstellt ein Feld in der DB. Außerdem wird eine verbindung erstellt zu project.todos, dem OneToMany feld, welchem die daten geliefert werden für schnellere abfragen.
