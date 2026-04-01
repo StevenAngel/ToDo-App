@@ -16,7 +16,8 @@ export class Todo {
     @Column()
     priority: Priority;
 
-    @Column({ nullable: true })
+    // Type timestamptz = timestamp mit timezone für korrektes formatting später
+    @Column({type: "timestamptz" , nullable: true })
     deadline: Date;
 
     @Column({ type: 'simple-json', default: [] })
