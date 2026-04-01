@@ -20,7 +20,7 @@
                 </v-chip>
                 <v-chip v-if="todo.deadline"
                     :color="todo.deadline && new Date(todo.deadline) <= new Date() ? 'red' : ''">
-                    {{ todo.deadline }}
+                    {{ new Date(todo.deadline).toLocaleDateString() }}
                 </v-chip>
             </div>
         </template>
