@@ -4,10 +4,16 @@
             <!-- click.stop stoppt den click, da wir schon auf dem list item den click handlen -->
             <v-checkbox-btn :model-value="todo.isDone" readonly></v-checkbox-btn>
         </template>
-        <v-list-item-title :class="{ 'text-decoration-line-through': todo.isDone }">{{ todo.title
-        }}</v-list-item-title>
-        <v-list-item-subtitle v-if="todo.description">{{ todo.description }}</v-list-item-subtitle>
-
+        <div class="d-flex align-center ga-2">
+            <div>
+                <v-list-item-title :class="{ 'text-decoration-line-through': todo.isDone }">{{ todo.title
+                    }}</v-list-item-title>
+                <v-list-item-subtitle v-if="todo.description">{{ todo.description }}</v-list-item-subtitle>
+            </div>
+            <div v-if="todo.tags" class="d-flex ga-2">
+                <v-chip v-for="tag in todo.tags" variant="outlined">{{ tag }}</v-chip>
+            </div>
+        </div>
         <template #append>
             <!-- div statt v-chip-group, da v-chip-group farbe aller child überschreibt. -->
             <!-- class display-flex und gap-2 (8px) -->
@@ -22,6 +28,9 @@
                     :color="todo.deadline && new Date(todo.deadline) <= new Date() ? 'red' : ''">
                     {{ new Date(todo.deadline).toLocaleDateString() }}
                 </v-chip>
+                <v-btn variant="tonal" @click.stop="console.log('test')">
+                    <v-icon :icon="'mdi-cog'" />
+                </v-btn>
             </div>
         </template>
     </v-list-item>
@@ -47,7 +56,7 @@ watch(todo.value, async (newValue,) => {
 
     try {
         await todoApi.update(newValue.id.toString(), updateTodo);
-    } catch(e) {
+    } catch (e) {
         console.error(e);
     }
 })
