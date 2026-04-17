@@ -1,13 +1,32 @@
 <template>
-    <div class="outlinedContainer rounded">
-        <span class="label">{{ props.label }}</span>
+    <div ref="container" class="outlinedContainer rounded">
+        <span class="label" :style="{ backgroundColor: backgroundColor }">{{ props.label }}</span>
         <v-list class="pa-4 d-flex flex-column ga-2" bg-color="transparent">
             <slot />
         </v-list>
     </div>
 </template>
 <script lang="ts" setup>
-const props = defineProps<{ label: string }>()
+import { ref, onMounted } from 'vue';
+const props = defineProps<{ label: string }>();
+const container = ref<HTMLElement>();
+const backgroundColor = ref<string>('transparent');
+
+function getBackground(el: HTMLElement | null | undefined) {
+    while (el) {
+        const bg = getComputedStyle(el).backgroundColor;
+        if (bg && bg != 'transparent' && bg != 'rgba(0, 0, 0, 0)') {
+            backgroundColor.value = bg;
+            return;
+        }
+
+        el = el.parentElement;
+    }
+}
+
+onMounted(() => {
+    getBackground(container.value?.parentElement)
+});
 </script>
 <style scoped>
 .outlinedContainer {
@@ -21,6 +40,5 @@ const props = defineProps<{ label: string }>()
     left: 16px;
     padding: 4px;
     z-index: 99;
-    background: rgb(var(--v-theme-background));
 }
 </style>
