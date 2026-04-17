@@ -9,22 +9,39 @@
             <v-divider></v-divider>
 
             <v-tabs-window v-model="tab">
-                <v-tabs-window-item value="open" class="pa-2 d-flex flex-column ga-2">
+                <v-tabs-window-item value="open" class="pa-2 d-flex flex-column ga-4">
                     <!-- SORT TODOS -->
-                    <v-select label="Sort" v-model="sortBy" :items="['Priority', 'Deadline', 'Tag']"
-                        class="ml-auto" width="150" hide-details>
+                    <v-select label="Sort" v-model="sortBy" :items="['Priority', 'Deadline', 'Tag']" class="ml-auto"
+                        width="150" hide-details>
                     </v-select>
                     <!-- SORT CONTAINER -->
-                    <OutlinedContainer v-for="value in sortedContainers" :label="value">
-                        <!-- DASHBOARD ITEM -->
-                        <TodoItem v-for="item in filterItems(value).filter(value => !value.isDone)" v-model="todos[todos.indexOf(item)]" />
-                    </OutlinedContainer>
+                    <template v-for="value in sortedContainers">
+
+                        <OutlinedContainer v-if="filterItems(value).filter(value => !value.isDone).length > 0" :label="value">
+                            <!-- DASHBOARD ITEM -->
+                            <TodoItem v-for="item in filterItems(value).filter(value => !value.isDone)"
+                                v-model="todos[todos.indexOf(item)]" />
+                        </OutlinedContainer>
+                    </template>
                     <!-- <TodoItem v-for="todo in todos.filter(value => !value.isDone)" v-model="todos[todos.indexOf(todo)]"> -->
                     <!-- </TodoItem> -->
                 </v-tabs-window-item>
-                <v-tabs-window-item value="done" class="pa-2 d-flex flex-column ga-2">
-                    <TodoItem v-for="todo in todos.filter(value => value.isDone)" v-model="todos[todos.indexOf(todo)]">
-                    </TodoItem>
+                <v-tabs-window-item value="done" class="pa-2 d-flex flex-column ga-4">
+                    <!-- SORT TODOS -->
+                    <v-select label="Sort" v-model="sortBy" :items="['Priority', 'Deadline', 'Tag']" class="ml-auto"
+                        width="150" hide-details>
+                    </v-select>
+                    <!-- SORT CONTAINER -->
+                    <!-- template statt div wrapper, da div ein DOM erzeugt und template nur für vue sichtbar ist -->
+                    <template v-for="value in sortedContainers">
+                        <OutlinedContainer v-if="filterItems(value).filter(item => item.isDone).length > 0"
+                            :label="value">
+                            <!-- DASHBOARD ITEM -->
+                            <TodoItem v-for="item in filterItems(value).filter(value => value.isDone)"
+                                v-model="todos[todos.indexOf(item)]" />
+                        </OutlinedContainer>
+                    </template>
+
                 </v-tabs-window-item>
             </v-tabs-window>
         </v-sheet>
