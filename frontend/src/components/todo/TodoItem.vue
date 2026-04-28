@@ -132,18 +132,11 @@ const updatedTodo = ref<UpdateTodo>({
     isDone: todo.value.isDone
 });
 
-watch(todo.value, async (newValue, oldValue) => {
+watch(() => todo.value.isDone, async (newValue, oldValue) => {
+    console.log(newValue, oldValue);
     // Only update isDone, other values will be updated in form
-    if (newValue.isDone != oldValue.isDone) {
-        updatedTodo.value = {
-            title: newValue.title,
-            description: newValue.description,
-            priority: newValue.priority,
-            deadline: newValue.deadline,
-            tags: newValue.tags,
-            isDone: newValue.isDone
-        }
-
+    if (newValue != oldValue) {
+        updatedTodo.value.isDone = newValue;
         await updateTodo();
     }
 })
