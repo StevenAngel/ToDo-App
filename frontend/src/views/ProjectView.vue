@@ -33,6 +33,7 @@ const loadProject = async () => {
 const loadTodos = async () => {
   try {
     const allTodos = await todoApi.getAll(route.params.id.toString());
+    console.log(route.params.id.toString(), allTodos)
     todos.value = allTodos.data;
   } catch (e) {
     console.error(e);
