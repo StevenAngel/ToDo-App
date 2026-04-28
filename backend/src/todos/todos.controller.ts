@@ -17,7 +17,7 @@ export class TodosController {
 
   @Get('project/:projectId')
   findAll(
-    @Param(':projectId') projectId: string
+    @Param('projectId') projectId: string
   ) {
     return this.todosService.findAll(+projectId);
   }
