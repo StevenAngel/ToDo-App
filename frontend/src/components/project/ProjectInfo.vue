@@ -33,7 +33,8 @@
                                                         <v-col cols="9" class="d-flex flex-column ga-2">
                                                             <v-text-field label="New Title" v-model="form.title"
                                                                 hide-details="auto"></v-text-field>
-                                                            <v-text-field label="New Description" v-model="form.description"
+                                                            <v-text-field label="New Description"
+                                                                v-model="form.description"
                                                                 hide-details="auto"></v-text-field>
                                                         </v-col>
                                                     </v-row>
@@ -41,6 +42,40 @@
                                             </v-container>
                                             <v-card-actions>
                                                 <v-spacer></v-spacer>
+                                                <v-dialog>
+                                                    <!-- v-slot (#activator) ist das Element, dass den Dialog öffnen soll. Es legt für den v-dialog ein object props an. Es ist ein eventListener wie onClick.  -->
+                                                    <template #activator="{ props }">
+                                                        <!-- mit v-bind binde ich das object an den button, damit vuetify weiß, es muss den dialog onclick öffnen  -->
+                                                        <v-btn variant="tonal" color="red" v-bind="props">
+                                                            Delete
+                                                        </v-btn>
+                                                    </template>
+                                                    <!-- isActive ist ebenfalls eine intern für den dialog angelegte Ref von vuetify, die den wert enthält, ob der dialog offen (true) oder geschlossen (false) ist -->
+                                                    <template #default="{ isActive }">
+                                                        <v-row justify="center">
+                                                            <v-col cols="12" sm="8" md="6" lg="4">
+                                                                <v-card>
+                                                                    <v-card-title class="text-wrap">
+                                                                        Do you really want to delete this project?
+                                                                    </v-card-title>
+                                                                    <v-card-text>
+                                                                        Deleting this project will permanently delete
+                                                                        all associated todos. This
+                                                                        action cannot be undone.
+                                                                    </v-card-text>
+                                                                    <v-card-actions>
+                                                                        <v-spacer></v-spacer>
+                                                                        <v-btn
+                                                                            @click="isActive.value = false; deleteProject()"
+                                                                            color="red">Delete</v-btn>
+                                                                        <v-btn
+                                                                            @click="isActive.value = false">Cancel</v-btn>
+                                                                    </v-card-actions>
+                                                                </v-card>
+                                                            </v-col>
+                                                        </v-row>
+                                                    </template>
+                                                </v-dialog>
                                                 <v-btn @click="isActive.value = false" type="submit"
                                                     color="green">Save</v-btn>
                                                 <v-btn @click="isActive.value = false">Cancel</v-btn>
@@ -61,28 +96,38 @@
 import { ref } from 'vue';
 import type { Project, UpdateProject } from '@/types/project';
 import { projectApi } from '@/api/projects';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
-const project = defineModel<Project>({required: true});
+const router = useRouter();
+const project = defineModel<Project>({ required: true });
 const form = ref<UpdateProject>({
     title: project.value?.title,
     description: project.value?.description
 });
 
 const updateProject = async () => {
- try{
-    const res = await projectApi.update(route.params.id.toString(), form.value);
-    if(res.status == 200) {
-        project.value = {
-            id: project.value.id,
-            todos: project.value.todos,
-            title: form.value.title,
-            description: form.value.description
+    try {
+        const res = await projectApi.update(route.params.id.toString(), form.value);
+        if (res.status == 200) {
+            project.value = {
+                id: project.value.id,
+                todos: project.value.todos,
+                title: form.value.title,
+                description: form.value.description
+            }
         }
+    } catch (e) {
+        console.error(e);
     }
- } catch(e) {
-    console.error(e);
- }
+}
+
+const deleteProject = async () => {
+    try {
+        const deleted = await projectApi.delete(project.value.id.toString());
+        if(deleted.status == 200) router.push("/");;
+    } catch (e) {
+        console.error(e);
+    }
 }
 </script>
 <style scoped></style>
