@@ -6,11 +6,17 @@ const router = createRouter({
         {
             path: "/",
             name: "home",
-            component: () => import("../views/DashboardView.vue"),
+            component: () => import("../views/HomepageView.vue"),
         },
         {
             path: "/project",
-            redirect: "/"
+            redirect: "/projects"
+        },
+        {
+            path: "/projects",
+            // redirect: "/"
+            name: "projects",
+            component: () => import("../views/DashboardView.vue"),
         },
         {
             path: "/project/:id",

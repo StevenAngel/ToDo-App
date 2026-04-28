@@ -124,7 +124,7 @@ const updateProject = async () => {
 const deleteProject = async () => {
     try {
         const deleted = await projectApi.delete(project.value.id.toString());
-        if(deleted.status == 200) router.push("/");;
+        if(deleted.status == 200) router.push("/projects");;
     } catch (e) {
         console.error(e);
     }
