@@ -7,7 +7,7 @@
         <div class="d-flex align-center ga-2">
             <div>
                 <v-list-item-title :class="{ 'text-decoration-line-through': todo.isDone }">{{ todo.title
-                }}</v-list-item-title>
+                    }}</v-list-item-title>
                 <v-list-item-subtitle v-if="todo.description">{{ todo.description }}</v-list-item-subtitle>
             </div>
             <div v-if="todo.tags" class="d-flex ga-2">
@@ -83,6 +83,37 @@
                                         </v-container>
                                         <v-card-actions>
                                             <v-spacer></v-spacer>
+                                            <v-dialog>
+                                                <!-- v-slot (#activator) ist das Element, dass den Dialog öffnen soll. Es legt für den v-dialog ein object props an. Es ist ein eventListener wie onClick.  -->
+                                                <template #activator="{ props }">
+                                                    <!-- mit v-bind binde ich das object an den button, damit vuetify weiß, es muss den dialog onclick öffnen  -->
+                                                    <v-btn variant="tonal" color="red" v-bind="props">
+                                                        Delete
+                                                    </v-btn>
+                                                </template>
+                                                <!-- isActive ist ebenfalls eine intern für den dialog angelegte Ref von vuetify, die den wert enthält, ob der dialog offen (true) oder geschlossen (false) ist -->
+                                                <template #default="{ isActive }">
+                                                    <v-row justify="center">
+                                                        <v-col cols="12" sm="8" md="6" lg="4">
+                                                            <v-card>
+                                                                <v-card-title class="text-wrap">
+                                                                    Do you really want to delete this todo?
+                                                                </v-card-title>
+                                                                <v-card-text>
+                                                                    Deleting this todo cannot be undone.
+                                                                </v-card-text>
+                                                                <v-card-actions>
+                                                                    <v-spacer></v-spacer>
+                                                                    <v-btn @click="isActive.value = false; deleteTodo();"
+                                                                        color="red">Delete</v-btn>
+                                                                    <v-btn
+                                                                        @click="isActive.value = false">Cancel</v-btn>
+                                                                </v-card-actions>
+                                                            </v-card>
+                                                        </v-col>
+                                                    </v-row>
+                                                </template>
+                                            </v-dialog>
                                             <v-btn @click="isActive.value = false" type="submit"
                                                 color="green">Save</v-btn>
                                             <v-btn @click="isActive.value = false">Cancel</v-btn>
@@ -101,6 +132,9 @@
 import type { Todo, UpdateTodo } from '@/types/todo';
 import { computed, watch, ref, type Ref } from 'vue';
 import { todoApi } from '@/api/todos';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 // required: true, damit error geworfen wird, wenn kein v-model im parent angegeben
 const todo: Ref<Todo> = defineModel<Todo>({ required: true });
 const dateOpen = ref<boolean>(false);
@@ -160,6 +194,18 @@ const updateTodo = async () => {
                 tags: updatedTodo.value.tags,
                 projectId: todo.value.projectId
             }
+        }
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+const deleteTodo = async () => {
+    try {
+        const deleted = await todoApi.delete(todo.value.id.toString());
+        if (deleted.status == 200) {
+            // Seite neu laden für einfachheit, eigentlich emit und dann vom parent den component unmounten
+            router.go(0);
         }
     } catch (e) {
         console.error(e);
